@@ -1,59 +1,106 @@
-A RESTful API for an e-commerce platform specializing in stationery products, built with Java Spring Boot and PostgreSQL. The app supports cart management, product catalogs, user authentication, order processing, and comments/reviews.
+# 📒 Stationery E-Commerce API
+
+A **RESTful API** built with **Java Spring Boot** and **PostgreSQL** for an e-commerce platform specializing in stationery products. This API supports essential e-commerce features, including **cart management, product catalogs, user authentication, order processing, and a comment/review system**.
+
 ---
-Key Features
 
-1. Cart Management
-- Retrieve a user's cart contents.
-- Add/remove items, adjust quantities, or clear the cart.
-- Calculate cart totals and process checkouts.
+## ✨ Key Features
 
-2. Category Management
-- Organize products into categories.
-- Assign products to categories and fetch products by category.
+### 🛒 Cart Management
+- 🛍️ Retrieve a user's cart contents.
+- ➕ Add/remove items, adjust quantities, or clear the cart.
+- 💰 Calculate cart totals and process checkouts.
 
-3. Comment/Review System
-- Users can add, view, or delete comments on products.
+### 📂 Category Management
+- 🏷️ Organize products into categories.
+- 🔍 Assign products to categories and fetch products by category.
 
-- Filter comments by user or product.
+### 📝 Comment & Review System
+- 💬 Users can **add, view, and delete** comments on products.
+- 🎯 Filter comments by **user or product**.
 
+### 📦 Order Processing
+- 📋 Track orders by **user, status, or date range**.
+- ❌ Cancel orders and generate **user statistics via PostgreSQL stored procedures**.
 
-4. Order Processing
--  Track orders by user, status, or date range.
+### 🏷️ Product Management
+- 🏗️ Full **CRUD** operations for products.
+- 📸 Manage stock levels and product images (**upload, update, delete**).
+- 📊 Retrieve summarized product data using a **PostgreSQL view table**.
 
-- Cancel orders and generate user statistics via PostgreSQL stored procedures.
+### 👤 User Management
+- 🔐 Register, activate, and manage user accounts.
+- 🔑 Secure authentication via **login endpoint**.
 
-5. Product Management
-- CRUD operations for products.
+---
 
-- Manage stock levels and product images (upload, update, delete).
+## 🏗️ Architecture & Best Practices
 
-- Retrieve summarized product data using a PostgreSQL view table.
+### 🔹 MVC Architecture
+This API follows the **Model-View-Controller (MVC)** architecture, ensuring **scalability, maintainability, and testability** by separating concerns:
+- **🛠️ Models** handle business logic.
+- **📡 Controllers** process HTTP requests.
+- **📂 Services & Repositories** manage data and operations.
 
+### 🔹 Interfaces & Loose Coupling
+- 🏗️ Interfaces define **consistent contracts** between components, promoting **loose coupling**.
+- 🔄 Allows for **seamless integration of future enhancements**.
 
-6. User Management
-- Register, activate, and manage user accounts.
+### 🔹 Database Features
+- 📜 **Triggers** automatically log historical price changes whenever a product’s price is updated, ensuring an **audit trail** for transparency.
+- 📊 **Stored procedures** optimize complex queries like **user order statistics**.
+- 🔍 **View tables** provide summarized product data for efficient API responses.
 
-- Authentication via login endpoint.
+### 🔹 DTOs (Data Transfer Objects)
+- 📦 DTOs **decouple** the internal domain model from the API layer.
+- 🛡️ Ensures **validation**, **controlled data exposure**, and **optimized payload sizes**.
 
-------
-The system follows the MVC (Model-View-Controller) architecture, 
-separating business logic (Models), HTTP request handling (Controllers), and presentation, which promotes scalability, testability, and maintainability. 
+### 🔹 Security Best Practices
+- 🔒 **Password hashing** with robust cryptographic algorithms ensures sensitive credentials remain protected, even in case of a data breach.
 
-Interfaces play a critical role in defining consistent contracts between components (e.g., service layers, repositories), facilitating loose coupling, 
-and seamless integration of future enhancements. 
+---
 
-The application operates database triggers to automatically log historical price changes whenever a product’s price is updated, 
-ensuring an audit trail for data transparency and compliance. 
+## 🚀 Technologies Used
 
-Data Transfer Objects (DTOs) are utilized to decouple the internal domain model from the API layer, 
-enabling controlled data exposure, validation, and optimized payloads for client interactions. 
+- 🖥 **Java 17+**
+- 🔥 **Spring Boot** (Spring Security, Spring Data JPA)
+- 🗄 **PostgreSQL** (Stored Procedures, Triggers, View Tables)
+- 🔐 **JWT Authentication**
+- 📦 **Lombok & MapStruct** (for code simplification)
 
-For security, user passwords are hashed using robust algorithms before storage, 
-ensuring sensitive credentials remain protected even in the event of a database breach. 
-Together, these practices ensure a secure, modular, and maintainable codebase aligned with industry standards.
+---
 
+## 🛠️ Getting Started
 
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/your-username/your-repository.git
+cd your-repository
+```
 
+### 2️⃣ Configure the database
+Update `application.properties` with your **PostgreSQL** configuration:
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/your-database
+spring.datasource.username=your-username
+spring.datasource.password=your-password
+```
 
+### 3️⃣ Run the application
+```bash
+mvn spring-boot:run
+```
 
+### 4️⃣ API Documentation
+API endpoints are documented using **Swagger**. Once the app is running, visit:
+🔗 `http://localhost:8080/swagger-ui.html`
 
+---
+
+## 🤝 Contributing
+Contributions are welcome! Feel free to fork the repository and submit a pull request.
+
+---
+
+## 📜 License
+This project is licensed under the **MIT License**.
