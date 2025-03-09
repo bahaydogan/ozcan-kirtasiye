@@ -1,7 +1,7 @@
 package com.ozcan_kirtasiye.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ozcan_kirtasiye.app.role.UserRole;
+import com.ozcan_kirtasiye.app.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -45,6 +45,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;  // Default
 
-
+    @Column
+    String address;
 
 }

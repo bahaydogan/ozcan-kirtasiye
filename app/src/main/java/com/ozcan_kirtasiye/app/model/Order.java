@@ -1,5 +1,7 @@
 package com.ozcan_kirtasiye.app.model;
 
+import com.ozcan_kirtasiye.app.enums.OrderStatus;
+import com.ozcan_kirtasiye.app.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -30,6 +32,11 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status = OrderStatus.IN_PROCESS;// Default
+
 
     // Constructors, getters, setters
 }

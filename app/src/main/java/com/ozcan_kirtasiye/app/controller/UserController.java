@@ -2,16 +2,18 @@ package com.ozcan_kirtasiye.app.controller;
 
 import com.ozcan_kirtasiye.app.dto.UserCreate;
 import com.ozcan_kirtasiye.app.error.Error;
-import com.ozcan_kirtasiye.app.model.Product;
 import com.ozcan_kirtasiye.app.model.User;
-import com.ozcan_kirtasiye.app.repository.IUserRepo;
+import com.ozcan_kirtasiye.app.security.CurrentUser;
 import com.ozcan_kirtasiye.app.service.IUserService;
-import com.ozcan_kirtasiye.app.service.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,12 +47,25 @@ public class UserController {
 
     // format su sekilde:  api/user?page=2&size=1    mesela
     @GetMapping
-    public ResponseEntity<?> getAllUsers(Pageable pageable) {
-        return new ResponseEntity<>(userService.getAllUsers(pageable), HttpStatus.OK);
+    public Page<User> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size )
+    {
+        Pageable pageable = PageRequest.of(page, size);
+        return userService.getAllUsers(pageable);
     }
 
-    @DeleteMapping("{userId}")
+
+    @DeleteMapping("/adminDelete/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable long userId) {
+        userService.deleteUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{userId}") //bak buraya<<<<<<<<<<<<<<<<<<
+    @PreAuthorize("principal.id == #userId")
+    public ResponseEntity<?> deleteUser2(@PathVariable long userId) {
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -61,11 +76,10 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
+    @PreAuthorize("principal.id == #userId")
     public ResponseEntity<?> updateUserById(@PathVariable Long userId, @RequestBody User newUser) {
         return new ResponseEntity<>(userService.updateUserById(userId, newUser), HttpStatus.OK);
     }
-
-
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -1,8 +1,10 @@
 package com.ozcan_kirtasiye.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -15,9 +17,9 @@ public class Category {
 
     private String name;
 
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonIgnore // Döngüyü önler
+    private List<Product> products = new ArrayList<>();
 
 
 }
-

@@ -20,6 +20,8 @@ public class CommentDTO {
         dto.setUsername(comment.getUser().getName());
         return dto;
     }
+
+    //todo: commentdto yu controlleda aktif şekilde kullan.
     // ...
 }
 

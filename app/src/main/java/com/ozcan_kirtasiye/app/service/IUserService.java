@@ -20,4 +20,5 @@ public interface IUserService {
 
     void activateUser(String token);
 
+    User getUserByEmail(String email);
 }

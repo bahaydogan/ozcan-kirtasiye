@@ -1,5 +1,6 @@
 package com.ozcan_kirtasiye.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class OrderItem {
     private Integer quantity;
     private Double unitPrice; // Price at the time of purchase
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

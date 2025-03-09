@@ -3,8 +3,9 @@ package com.ozcan_kirtasiye.app.service;
 import com.ozcan_kirtasiye.app.model.*;
 import com.ozcan_kirtasiye.app.repository.ICommentRepo;
 import com.ozcan_kirtasiye.app.repository.IProductRepo;
+import com.ozcan_kirtasiye.app.security.CurrentUser;
+import jakarta.transaction.Transactional;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,9 +22,19 @@ public class CommentService {
     @Autowired
     private IProductRepo productRepository;
 
-    public Comment addComment(User user, Long productId, String text) {
+    @Autowired
+    private IUserService userService;
+
+    public Comment addComment(CurrentUser currentUser , Long productId, String text) {
+
+        if (text == null || text.trim().isEmpty()) {
+            throw new IllegalArgumentException("Comment cannot be empty");
+        }
+
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        User user = userService.getUserById(currentUser.getId());
 
         Comment comment = new Comment();
         comment.setUser(user);
@@ -34,13 +45,24 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    @Transactional
     public List<Comment> getCommentsByProduct(Long productId) {
         return commentRepository.findByProductId(productId);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Comment> getCommentsByUserId(Long userId) {
+        // Fetch and return comments for the user
+        return commentRepository.findByUserId(userId);
+    }
+
     public void deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
     }
+
+    public Optional<Comment> getCommentById(Long commentId) {
+        return commentRepository.findById(commentId);
+    }
+
+
 }
 

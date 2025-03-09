@@ -1,5 +1,6 @@
 package com.ozcan_kirtasiye.app.dto;
 
+import com.ozcan_kirtasiye.app.enums.OrderStatus;
 import com.ozcan_kirtasiye.app.model.Order;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ public class OrderDTO {
     private LocalDateTime orderDate;
     private Double totalPrice;
     private List<OrderItemDTO> orderItems;
+    private OrderStatus orderStatus;
 
     public static OrderDTO from(Order order) {
         OrderDTO dto = new OrderDTO();
@@ -23,6 +25,7 @@ public class OrderDTO {
                 .map(OrderItemDTO::from)
                 .collect(Collectors.toList());
         dto.setOrderItems(itemDTOs);
+        dto.setOrderStatus(order.getStatus());
         return dto;
     }
     // getters, setters

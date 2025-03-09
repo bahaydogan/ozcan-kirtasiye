@@ -1,5 +1,6 @@
 package com.ozcan_kirtasiye.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,10 +26,12 @@ public class Product {
 
     private String description;
 
+    @Column(nullable = false)
     private Integer stockQuantity;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
+    private String imageUrl;
 }
